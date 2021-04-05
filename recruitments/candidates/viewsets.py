@@ -11,17 +11,6 @@ from recruitments.candidates.utils import Util
 from recruitments.settings import EMAIL_HOST_USER
 
 
-# class PassthroughRenderer(renderers.BaseRenderer):
-#     """
-#         Return data as-is. View should supply a Response.
-#     """
-#     media_type = ''
-#     format = ''
-#
-#     def render(self, data, accepted_media_type=None, renderer_context=None):
-#         return data
-
-
 class CandidateViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows candidate to be viewed or edited.
@@ -32,6 +21,7 @@ class CandidateViewSet(viewsets.ModelViewSet):
     serializer_class = CandidateSerializer
 
     permission_classes = (permissions.IsAuthenticated,)
+
     # permissions.IsAdminUser
 
     def perform_create(self, serializer, commit=False):
@@ -55,7 +45,7 @@ class CandidateViewSet(viewsets.ModelViewSet):
             message = data['email_body']
             recepient = data['to_email']
             send_mail(subject,
-                           message, EMAIL_HOST_USER, [recepient], fail_silently=False)
+                      message, EMAIL_HOST_USER, [recepient], fail_silently=False)
 
             Util.send_email(data)
             serializer.validated_data['message'] = 'Mail Sent Success'
@@ -63,6 +53,3 @@ class CandidateViewSet(viewsets.ModelViewSet):
             serializer.validated_data['message'] = 'Invalid mail found'
 
         super(CandidateViewSet, self).perform_create(serializer)
-
-
-

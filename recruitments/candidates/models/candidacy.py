@@ -31,7 +31,7 @@ class Candidate(models.Model):
         _('Phone Number'),
         max_length=8,
         validators=[MinLengthValidator(8)],
-        blank=False, db_index=True,null=False)
+        blank=False, db_index=True, null=False)
     availability = models.FloatField(
         _('availability'),
         validators=[MinValueValidator(0.0), MaxValueValidator(0.6)],
@@ -48,11 +48,5 @@ class Candidate(models.Model):
     application_status = models.CharField(_('Action Name'), max_length=45, choices=APPLICATION_CHOICES,
                                           default='new_application', db_index=True)
 
-    @property
-    def name(self):
-        if not self.get_full_name():
-            return self.email
-        return self.get_full_name()
-
     def __str__(self):
-        return self.name
+        return self.email
