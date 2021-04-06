@@ -40,12 +40,16 @@ class CandidateViewSet(viewsets.ModelViewSet):
             to=[email, ])
 
         # msg.track_clicks = True
+        serializer.validated_data['created_by'] = self.request.user
+
         try:
             subject = data['email_subject']
             message = data['email_body']
             recepient = data['to_email']
             send_mail(subject,
                       message, EMAIL_HOST_USER, [recepient], fail_silently=False)
+
+            #add user self?req
 
             Util.send_email(data)
             serializer.validated_data['message'] = 'Mail Sent Success'
